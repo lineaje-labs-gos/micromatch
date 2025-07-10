@@ -1,8 +1,8 @@
 {
   "name": "micromatch",
   "description": "Glob matching for javascript/node.js. A drop-in replacement and faster alternative to minimatch and multimatch.",
-  "version": "3.1.10",
-  "homepage": "https://github.com/micromatch/micromatch",
+  "version": "3.1.10-lineaje-01",
+  "homepage": "https://github.com/lineaje-labs-gos/micromatch",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
     "Amila Welihinda (amilajack.com)",
@@ -17,11 +17,12 @@
     "Paul Miller (paulmillr.com)",
     "Tom Byrer (https://github.com/tomByrer)",
     "Tyler Akins (http://rumkin.com)",
-    "(https://github.com/DianeLooney)"
+    "(https://github.com/DianeLooney)",
+    "Abhisek Sanyal"
   ],
-  "repository": "micromatch/micromatch",
+  "repository": "lineaje-labs-gos/micromatch",
   "bugs": {
-    "url": "https://github.com/micromatch/micromatch/issues"
+    "url": "https://github.com/lineaje-labs-gos/micromatch/issues"
   },
   "license": "MIT",
   "files": [
