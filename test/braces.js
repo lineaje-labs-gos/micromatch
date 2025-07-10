@@ -10,6 +10,7 @@
 var assert = require('assert');
 var extend = require('extend-shallow');
 var mm = require('..');
+const { hasBraces } = require('../index.js');
 
 function optimize(pattern, options) {
   return mm.braces(pattern, extend({optimize: true}, options));
@@ -388,4 +389,21 @@ describe('braces - optimized', function() {
       optimize('a/{x,{1..5},y}/c{d}e', ['a/(x|([1-5])|y)/c\\{d\\}e']);
     });
   });
+});
+
+describe('braces', () => {
+   it("should return true when braces are found", () => {
+      assert.equal(hasBraces("{foo}"), true);
+      assert.equal(hasBraces("foo}"), false);
+      assert.equal(hasBraces("{foo"), false);
+      assert.equal(hasBraces("a{}b"), true);
+      assert.equal(hasBraces("abc {foo} xyz"), true);
+      assert.equal(hasBraces("abc {foo xyz"), false);
+      assert.equal(hasBraces("abc {foo} xyz"), true);
+      assert.equal(hasBraces("abc foo} xyz"), false);
+      assert.equal(hasBraces("abc foo xyz"), false);
+      assert.equal(hasBraces("abc {foo} xyz {bar} pqr"), true);
+      assert.equal(hasBraces("abc {foo xyz {bar} pqr"), true);
+      assert.equal(hasBraces("abc foo} xyz {bar pqr"), false);
+    });
 });
