@@ -624,12 +624,6 @@ const hasBraces = v => {
 
 micromatch.braces = (pattern, options = {}) => {
   options = options || {};
-  if (Array.isArray(pattern)) {
-    // Expand each pattern in the array and flatten the result
-    return options.nodupes
-      ? [...new Set(pattern.flatMap(pat => micromatch.braces(pat, options)))]
-      : pattern.flatMap(pat => micromatch.braces(pat, options));
-  }
   if (typeof pattern !== 'string') throw new TypeError('Expected a string');
   if ((options && options.nobrace === true) || !hasBraces(pattern)) {
     return [pattern];
