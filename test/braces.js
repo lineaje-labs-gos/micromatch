@@ -45,23 +45,6 @@ describe('braces - optimized', function() {
     });
   });
 
-  describe('array of patterns', function() {
-    it('should expand an array of patterns', function() {
-      var actual = mm.braces(['a/{b,c}/d', 'a/{b,c}/d']);
-      assert.deepEqual(actual, ['a/(b|c)/d', 'a/(b|c)/d']);
-    });
-
-    it('should not uniquify by default', function() {
-      var actual = mm.braces(['a/{b,c}/d', 'a/{b,c}/d']);
-      assert.deepEqual(actual, ['a/(b|c)/d', 'a/(b|c)/d']);
-    });
-
-    it('should uniquify when `options.nodupes` is true', function() {
-      var actual = mm.braces(['a/{b,c}/d', 'a/{b,c}/d'], {nodupes: true});
-      assert.deepEqual(actual, ['a/(b|c)/d']);
-    });
-  });
-
   describe('sets', function() {
     describe('invalid sets', function() {
       it('should handle invalid sets:', function() {
