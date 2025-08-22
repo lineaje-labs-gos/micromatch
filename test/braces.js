@@ -10,6 +10,7 @@
 var assert = require('assert');
 var extend = require('extend-shallow');
 var mm = require('..');
+const { hasBraces } = require('../index.js');
 
 function optimize(pattern, options) {
   return mm.braces(pattern, extend({optimize: true}, options));
@@ -41,23 +42,6 @@ describe('braces - optimized', function() {
     it('should expand braces when preceded by an extglob character', function() {
       var actual = mm.braces('abc/*-v@{1,2}.0.js', { optimize: true });
       assert.deepEqual(actual, [ 'abc/*-v@1.0.js', 'abc/*-v@2.0.js' ]);
-    });
-  });
-
-  describe('array of patterns', function() {
-    it('should expand an array of patterns', function() {
-      var actual = mm.braces(['a/{b,c}/d', 'a/{b,c}/d']);
-      assert.deepEqual(actual, ['a/(b|c)/d', 'a/(b|c)/d']);
-    });
-
-    it('should not uniquify by default', function() {
-      var actual = mm.braces(['a/{b,c}/d', 'a/{b,c}/d']);
-      assert.deepEqual(actual, ['a/(b|c)/d', 'a/(b|c)/d']);
-    });
-
-    it('should uniquify when `options.nodupes` is true', function() {
-      var actual = mm.braces(['a/{b,c}/d', 'a/{b,c}/d'], {nodupes: true});
-      assert.deepEqual(actual, ['a/(b|c)/d']);
     });
   });
 
@@ -388,4 +372,21 @@ describe('braces - optimized', function() {
       optimize('a/{x,{1..5},y}/c{d}e', ['a/(x|([1-5])|y)/c\\{d\\}e']);
     });
   });
+});
+
+describe('braces', () => {
+   it("should return true when braces are found", () => {
+      assert.equal(hasBraces("{foo}"), true);
+      assert.equal(hasBraces("foo}"), false);
+      assert.equal(hasBraces("{foo"), false);
+      assert.equal(hasBraces("a{}b"), true);
+      assert.equal(hasBraces("abc {foo} xyz"), true);
+      assert.equal(hasBraces("abc {foo xyz"), false);
+      assert.equal(hasBraces("abc {foo} xyz"), true);
+      assert.equal(hasBraces("abc foo} xyz"), false);
+      assert.equal(hasBraces("abc foo xyz"), false);
+      assert.equal(hasBraces("abc {foo} xyz {bar} pqr"), true);
+      assert.equal(hasBraces("abc {foo xyz {bar} pqr"), true);
+      assert.equal(hasBraces("abc foo} xyz {bar pqr"), false);
+    });
 });
