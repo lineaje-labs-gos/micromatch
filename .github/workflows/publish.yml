@@ -41,6 +41,12 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
+      - name: Configure .npmrc to read from JFrog
+        run: |
+            echo "registry=https://${{ secrets.JFROG_HOST_NAME }}/artifactory/api/npm/${{ secrets.NPM_GOS_ALL_ARTIFACTORY }}/" > ~/.npmrc
+            echo "//${{ secrets.JFROG_HOST_NAME }}/artifactory/api/npm/${{ secrets.NPM_GOS_ALL_ARTIFACTORY }}/:_authToken=${{ secrets.JFROG_SBOM_TESTER }}" >> ~/.npmrc
+            echo "always-auth=true" >> ~/.npmrc
+
       - name: Install dependencies for Node
         run: npm install 2>&1 | tee npm-install.log
 
@@ -73,6 +79,12 @@ jobs:
 
       - name: Install JFrog CLI
         run: curl -fL https://install-cli.jfrog.io | sh
+
+      - name: Configure .npmrc to read from JFrog
+        run: |
+            echo "registry=https://${{ secrets.JFROG_HOST_NAME }}/artifactory/api/npm/${{ secrets.NPM_GOS_ALL_ARTIFACTORY }}/" > ~/.npmrc
+            echo "//${{ secrets.JFROG_HOST_NAME }}/artifactory/api/npm/${{ secrets.NPM_GOS_ALL_ARTIFACTORY }}/:_authToken=${{ secrets.JFROG_SBOM_TESTER }}" >> ~/.npmrc
+            echo "always-auth=true" >> ~/.npmrc
 
       - name: Read version and package
         run: |
